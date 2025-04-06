@@ -8,6 +8,7 @@ import {
   Platform,
   ActivityIndicator,
   StyleSheet,
+  Image,
 } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { FontAwesome } from "@expo/vector-icons";
@@ -80,59 +81,120 @@ export default function CreateAccount() {
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
-      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+      >
         <View style={styles.formContainer}>
+          {/* Logo Section */}
           <View style={styles.logoContainer}>
-            <Text style={styles.naga}>Eyy</Text>
-            <Text style={styles.med}> Trike</Text>
+            <Image
+              source={require("../assets/images/title-logo.png")}
+              style={styles.logoImage}
+            />
           </View>
 
-          <Text style={styles.sign}>Sign up</Text>
+          <Text style={styles.sign}>Create Account</Text>
 
-          {[
-            { label: 'Full Name', value: fullname, setValue: setFullName, placeholder: 'Enter your full name', isPassword: false },
-            { label: 'Email', value: email, setValue: setEmail, placeholder: 'Enter your email', isPassword: false },
-            { label: 'Create a password', value: password, setValue: setPassword, placeholder: '**********', isPassword: true },
-            { label: 'Confirm password', value: confirmPassword, setValue: setConfirmPassword, placeholder: '**********', isPassword: true }
-          ].map((field, index) => (
-            <View key={index} style={styles.inputContainer}>
-              <Text style={styles.label}>{field.label}</Text>
-              <View style={styles.inputWrapper}>
+          {/* Form Section */}
+          <View style={styles.form}>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Full Name</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your full name"
+                placeholderTextColor="#A0A0A0"
+                value={fullname}
+                onChangeText={setFullName}
+                autoCapitalize="words"
+              />
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Email</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your email"
+                placeholderTextColor="#A0A0A0"
+                value={email}
+                onChangeText={setEmail}
+                autoCapitalize="none"
+                autoComplete="email"
+                keyboardType="email-address"
+              />
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Password</Text>
+              <View style={[styles.input, styles.passwordContainer]}>
                 <TextInput
-                  style={styles.input}
-                  placeholder={field.placeholder}
-                  value={field.value}
-                  onChangeText={field.setValue}
-                  autoCapitalize={field.isPassword ? "none" : "words"}
-                  keyboardType={field.label === "Email" ? "email-address" : "default"}
-                  secureTextEntry={field.isPassword && (field.label === 'Create a password' ? !passwordVisible : !confirmPasswordVisible)}
+                  style={styles.passwordField}
+                  placeholder="Create a password"
+                  placeholderTextColor="#A0A0A0"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={!passwordVisible}
+                  autoCapitalize="none"
                 />
-                {field.isPassword && (
-                  <TouchableOpacity
-                    onPress={() => field.label === 'Create a password' ? setPasswordVisible(!passwordVisible) : setConfirmPasswordVisible(!confirmPasswordVisible)}
-                  >
-                    <FontAwesome
-                      name={(field.label === 'Create a password' ? passwordVisible : confirmPasswordVisible) ? "eye-slash" : "eye"}
-                      size={20}
-                      color="#777"
-                    />
-                  </TouchableOpacity>
-                )}
+                <TouchableOpacity
+                  style={styles.iconContainer}
+                  onPress={() => setPasswordVisible(!passwordVisible)}
+                >
+                  <FontAwesome
+                    name={passwordVisible ? "eye-slash" : "eye"}
+                    size={20}
+                    color="#333"
+                  />
+                </TouchableOpacity>
               </View>
             </View>
-          ))}
+
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Confirm Password</Text>
+              <View style={[styles.input, styles.passwordContainer]}>
+                <TextInput
+                  style={styles.passwordField}
+                  placeholder="Confirm your password"
+                  placeholderTextColor="#A0A0A0"
+                  value={confirmPassword}
+                  onChangeText={setConfirmPassword}
+                  secureTextEntry={!confirmPasswordVisible}
+                  autoCapitalize="none"
+                />
+                <TouchableOpacity
+                  style={styles.iconContainer}
+                  onPress={() =>
+                    setConfirmPasswordVisible(!confirmPasswordVisible)
+                  }
+                >
+                  <FontAwesome
+                    name={confirmPasswordVisible ? "eye-slash" : "eye"}
+                    size={20}
+                    color="#333"
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
 
           {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
 
           <TouchableOpacity
-            style={[styles.signUpButton, loading && styles.disabledButton]}
+            style={styles.signUpButton}
             onPress={handleSignUp}
             disabled={loading}
           >
-            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Sign Up</Text>}
+            {loading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.buttonText}>Sign Up</Text>
+            )}
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.signInRedirect} onPress={() => router.push("/Signin")}>
+          <TouchableOpacity
+            style={styles.signInRedirect}
+            onPress={() => router.push("/Signin")}
+          >
             <Text>
               Already have an account? <Text style={styles.loginText}>Log in</Text>
             </Text>
@@ -143,7 +205,6 @@ export default function CreateAccount() {
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -153,78 +214,92 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     paddingHorizontal: 20,
+    gap: 16,
+    marginTop: -30,
   },
   logoContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: -60,
   },
-  naga: {
-    fontSize: 28,
-    fontWeight: "700",
-    color: "#007bff",
-  },
-  med: {
-    fontSize: 28,
-    fontWeight: "700",
-    color: "#28a745",
+  logoImage: {
+    width: 300,
+    height: 300,
+    resizeMode: "contain",
   },
   sign: {
     fontSize: 24,
     fontWeight: "bold",
+    paddingLeft: 5,
     color: "#1170B3",
+    textAlign: "start",
+    marginBottom: 20,
+  },
+  form: {
+    backgroundColor: "#F9FAFB",
+    borderRadius: 12,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   inputContainer: {
     marginBottom: 16,
   },
   label: {
-    fontSize: 14,
+    fontSize: 16,
     color: "#333",
+    fontWeight: "500",
     marginBottom: 8,
-    fontWeight: "bold",
-  },
-  inputWrapper: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    backgroundColor: "#fff",
   },
   input: {
-    flex: 1,
-    height: 40,
-    fontSize: 14,
-    color: "#000",
+    height: 48,
+    borderWidth: 1,
+    borderColor: "#E0E0E0",
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    fontSize: 16,
+    backgroundColor: "#F5F5F5",
   },
-  errorText: {
-    color: "red",
-    fontSize: 12,
-    marginBottom: 8,
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 12,
+  },
+  passwordField: {
+    flex: 1,
+    fontSize: 16,
+  },
+  iconContainer: {
+    marginLeft: 8,
   },
   signUpButton: {
-    backgroundColor: "#007bff",
-    padding: 12,
+    backgroundColor: "#b668c4",
+    height: 48,
     borderRadius: 8,
+    justifyContent: "center",
     alignItems: "center",
-    marginBottom: 16,
-  },
-  disabledButton: {
-    backgroundColor: "#ccc",
+    marginTop: 24,
   },
   buttonText: {
-    color: "#fff",
+    color: "white",
     fontSize: 16,
     fontWeight: "bold",
   },
+  errorText: {
+    color: "red",
+    fontSize: 14,
+    marginTop: 10,
+    textAlign: "center",
+  },
   signInRedirect: {
-    marginTop: 12,
-    alignItems: "center",
+    alignSelf: "center",
+    marginTop: 16,
   },
   loginText: {
-    color: "#007bff",
+    color: "#28B6F6",
     fontWeight: "bold",
   },
 });

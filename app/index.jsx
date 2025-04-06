@@ -16,20 +16,23 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
+      {/* Logo Section */}
       <View style={styles.logoContainer}>
         <Image
-          source={require('../assets/images/eyytrike-logo.png')}
+          source={require('../assets/images/rentify-img.png')}
           style={styles.logo}
           resizeMode="contain"
         />
+        <Text style={styles.tagline}>Find your perfect stay with Rentify</Text>
       </View>
 
+      {/* Button Section */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.signInButton} onPress={handleSignIn}>
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.signUpButton]} onPress={handleSignUp}>
+        <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
           <Text style={styles.buttonTextAlt}>Create Account</Text>
         </TouchableOpacity>
       </View>
@@ -40,28 +43,35 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb', // Light background color
+    backgroundColor: '#f3f4f6', // Light gray background for a clean look
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
   },
   logoContainer: {
     alignItems: 'center',
-    marginBottom: 40, // Slightly reduced for balance
+    marginBottom: 40,
   },
   logo: {
-    maxWidth: 300,
-    maxHeight: 300, 
-    borderRadius: 12, // Rounded logo edges
+    width: 450, // Responsive logo size
+    height: 450,
+    borderRadius: 12,
+  },
+  tagline: {
+    marginTop: 20,
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#6b7280', // Neutral gray for tagline
+    textAlign: 'center',
   },
   buttonContainer: {
     width: '100%',
-    gap: 20, // Spacing between buttons
+    gap: 20,
   },
   signInButton: {
-    backgroundColor: '#007BFF',
+    backgroundColor: '#b668c4', // Bright blue for primary action
     height: 50,
-    borderRadius: 25, // Fully rounded corners
+    borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
@@ -69,24 +79,23 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 6,
     elevation: 3,
-    paddingHorizontal: 20, // Additional padding for touch size
   },
   signUpButton: {
-    backgroundColor: '#f1f5f9', // Soft light gray
+    backgroundColor: '#f9fafb', // Soft white for secondary action
     height: 50,
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#d1d5db', // Soft border color
+    borderColor: '#d1d5db',
   },
   buttonText: {
     color: '#ffffff',
     fontSize: 18,
-    fontWeight: '600', // Slightly bold
+    fontWeight: '600',
   },
   buttonTextAlt: {
-    color: '#1e293b', // Darker text color for contrast
+    color: '#1f2937', // Darker gray for contrast
     fontSize: 18,
     fontWeight: '600',
   },

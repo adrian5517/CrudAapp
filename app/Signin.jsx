@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
+  Image, // Import Image component
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter, Stack } from "expo-router";
@@ -68,9 +69,12 @@ export default function SignIn() {
         style={styles.container}
       >
         <View style={styles.formContainer}>
+          {/* Replace text-based logo with image */}
           <View style={styles.logoContainer}>
-            <Text style={styles.naga}>Eyy</Text>
-            <Text style={styles.med}>Trike</Text>
+            <Image
+              source={require("../assets/images/title-logo.png")}
+              style={styles.logoImage}
+            />
           </View>
 
           <Text style={styles.sign}>Sign In</Text>
@@ -79,7 +83,8 @@ export default function SignIn() {
             <Text style={styles.label}>Email</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter your email"
+              placeholder="Enter your email" // Placeholder for email
+              placeholderTextColor="#A0A0A0" // Light gray placeholder color
               value={email}
               onChangeText={setEmail}
               autoCapitalize="none"
@@ -93,7 +98,8 @@ export default function SignIn() {
             <View style={[styles.input, styles.passwordContainer]}>
               <TextInput
                 style={styles.passwordField}
-                placeholder="Enter your password"
+                placeholder="Enter your password" // Placeholder for password
+                placeholderTextColor="#A0A0A0" // Light gray placeholder color
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry={!showPassword} // Toggle visibility
@@ -148,18 +154,13 @@ const styles = StyleSheet.create({
     marginTop: -30,
   },
   logoContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
   },
-  naga: {
-    fontSize: 50,
-    fontWeight: "bold",
-    color: "#1170B3",
-  },
-  med: {
-    fontSize: 50,
-    fontWeight: "bold",
-    color: "#82C45C",
+  logoImage: {
+    width: 300, // Adjust width as needed
+    height: 300, // Adjust height as needed
+    resizeMode: "contain",
   },
   sign: {
     fontSize: 24,
@@ -198,7 +199,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   signInButton: {
-    backgroundColor: "#28B6F6",
+    backgroundColor: "#b668c4",
     height: 48,
     borderRadius: 8,
     justifyContent: "center",

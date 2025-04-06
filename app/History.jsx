@@ -14,11 +14,11 @@ const RideHistory = () => {
 
   const loadRideHistory = async () => {
     try {
-      const storedRides = await AsyncStorage.getItem('rideHistory');
+      const storedRides = await AsyncStorage.getItem('propertyHistory'); // Use correct key
       if (storedRides) {
         const rides = JSON.parse(storedRides);
-        setSuccessRides(rides.filter(ride => ride.status === 'completed'));
-        setCanceledRides(rides.filter(ride => ride.status === 'canceled'));
+        setSuccessRides(rides.filter(ride => ride.status === 'booked')); // Match status
+        setCanceledRides(rides.filter(ride => ride.status === 'canceled')); // Match status
       }
     } catch (error) {
       console.error("Error loading ride history:", error);
@@ -32,27 +32,21 @@ const RideHistory = () => {
   const RideCard = ({ ride }) => (
     <View style={styles.rideCard}>
       <View style={styles.rideCardHeader}>
-        <Text style={[
+        <Text style={[ 
           styles.statusIndicator, 
-          { color: ride.status === 'completed' ? '#4CAF50' : '#F44336' }
+          { color: ride.status === 'booked' ? '#4CAF50' : '#F44336' }
         ]}>●</Text>
-        <Text style={styles.dateText}>{ride.date}</Text>
+        <Text style={styles.dateText}>{ride.date || 'No Date'}</Text>
       </View>
       <View style={styles.rideCardContent}>
         <View style={styles.rideInfo}>
-          <Text style={styles.driverName}>{ride.driver}</Text>
-          <Text style={styles.carInfo}>{ride.car}</Text>
+          <Text style={styles.driverName}>{ride.name || 'No Name'}</Text>
+          <Text style={styles.carInfo}>{ride.type || 'No Type'}</Text>
         </View>
         <View style={styles.locationContainer}>
-          <View style={styles.locationRow}>
-            <View style={styles.dot} />
-            <Text style={styles.locationText}>{ride.pickupLocation}</Text>
-          </View>
-          <View style={styles.verticalLine} />
-          <View style={styles.locationRow}>
-            <View style={[styles.dot, styles.destinationDot]} />
-            <Text style={styles.locationText}>{ride.dropoffLocation}</Text>
-          </View>
+          <Text style={styles.locationText}>Location: {ride.location || 'No Location'}</Text>
+          <Text style={styles.locationText}>Price: ₱{ride.price || 'No Price'}</Text>
+          <Text style={styles.locationText}>Booking Date: {ride.bookingDate || 'No Booking Date'}</Text>
         </View>
       </View>
     </View>
@@ -109,7 +103,7 @@ const RideHistory = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5F6FA",
+    backgroundColor: "#F9FAFB", // Softer background color
     padding: 16,
   },
   header: {
@@ -117,7 +111,7 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     color: "#1A1A1A",
     marginBottom: 24,
-    marginTop: 12,
+    textAlign: "center", // Center the header
   },
   tabContainer: {
     flexDirection: 'row',
@@ -126,10 +120,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 4,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 4 }, // Increased shadow for depth
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowRadius: 8,
+    elevation: 5,
   },
   tabButton: {
     flex: 1,
@@ -165,10 +159,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     padding: 16,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 4 }, // Increased shadow for depth
     shadowOpacity: 0.1,
     shadowRadius: 8,
-    elevation: 3,
+    elevation: 5,
   },
   rideCardHeader: {
     flexDirection: 'row',
@@ -234,7 +228,7 @@ const styles = StyleSheet.create({
   },
   emptyStateText: {
     textAlign: 'center',
-    color: '#666666',
+    color: '#888888', // Softer text color
     fontSize: 16,
     marginTop: 24,
   },
