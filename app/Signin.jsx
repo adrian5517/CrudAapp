@@ -28,7 +28,7 @@ export default function SignIn() {
     setLoading(true);
 
     try {
-      const response = await fetch("https://nagamedserver.onrender.com/api/user/signin", {
+      const response = await fetch("https://nagamedserver.onrender.com/api/auth/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
